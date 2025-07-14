@@ -1,0 +1,82 @@
+<mxfile host="65bd71144e">
+    <diagram id="jcGuvGS7WD97tPfIRQ_t" name="Page-1">
+        <mxGraphModel dx="534" dy="1698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="25" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="23">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="User:&lt;br&gt;&lt;br&gt;name&lt;br&gt;company name&lt;div&gt;Ai role&lt;br&gt;API Key&lt;br&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="195" y="-250" width="115" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="210" y="580" width="630" height="340" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="group" vertex="1" connectable="0" parent="16">
+                    <mxGeometry y="40" width="630" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="14">
+                    <mxGeometry width="630" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="group" vertex="1" connectable="0" parent="14">
+                    <mxGeometry x="270" y="30" width="340" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="User details" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="13">
+                    <mxGeometry x="80" y="30" width="260" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="edit card" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="13">
+                    <mxGeometry x="90" y="90" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Prompt" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="14">
+                    <mxGeometry x="350" y="170" width="260" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="AI details:&lt;br&gt;Agend role&lt;br&gt;company name&lt;br&gt;API Key" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="14">
+                    <mxGeometry x="120" y="170" width="220" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="ACCOUNT" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="16">
+                    <mxGeometry x="270" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="200" y="80" width="630" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
+                    <mxGeometry width="630" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
+                    <mxGeometry width="140" height="410" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Nav bar" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="17">
+                    <mxGeometry x="40" y="50" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Notes&lt;br&gt;&lt;div&gt;FaQ&lt;/div&gt;&lt;div&gt;set up&lt;/div&gt;&lt;div&gt;account&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
+                    <mxGeometry x="40" y="100" width="80" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="Login/Sign out" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="17">
+                    <mxGeometry x="25" y="370" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="1100" width="630" height="330" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="SET UP" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="465" y="1058" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="23" target="24">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="AI bot:&amp;nbsp;&lt;br&gt;API key&lt;br&gt;AI role&lt;br&gt;user_id&lt;br&gt;company name" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="-250" width="120" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="promts:&lt;br&gt;ai_id&lt;br&gt;promt type: default: &quot;?&quot;&lt;br&gt;promt text&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="-250" width="120" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="1:M" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="300" y="-220" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="1:M" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="470" y="-220" width="60" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
