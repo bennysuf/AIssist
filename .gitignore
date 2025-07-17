@@ -44,3 +44,7 @@ jest-cache/
 
 # MacOS
 *.DS_Store
+
+# drawio
+/../UI.drawio
+
