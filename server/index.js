@@ -17,6 +17,15 @@ app.use("/users", userRoutes);
 const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
 
+const promptRoutes = require("./routes/promptRoutes");
+app.use("/prompt", promptRoutes);
+
+const noteRoutes = require("./routes/noteRoutes");
+app.use("/note", noteRoutes);
+
+const assistantRoutes = require("./routes/assistantRoutes");
+app.use("/assistant", assistantRoutes);
+
 // catchall to throw error
 app.use(
   catchAsync(async (req, res, next) => {
