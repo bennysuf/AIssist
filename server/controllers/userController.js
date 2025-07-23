@@ -1,15 +1,38 @@
-const userModel = require("../models/userModel");
+const user = require("../db/models/user");
+const catchAsync = require("../utils/catchAsync");
 
-const getUser = () => {};
-const getUsers = () => {};
-const createUser = () => {};
-const updateUser = () => {};
-const deleteUser = () => {};
+const getUser = catchAsync(async (req, res, next) => {
+  const body = req.body;
+});
+
+const getUsers = catchAsync(async (req, res, next) => {
+  const body = req.body;
+});
+
+// const createUser = catchAsync(async (req, res, next) => {
+//   const body = req.body;
+
+//   const newUser = await user.create({
+//     firstName: body.firstName,
+//     lastName: body.lastName,
+//     email: body.email,
+//     phone: body.phone,
+
+//   })
+// });
+
+const updateUser = catchAsync(async (req, res, next) => {
+  const body = req.body;
+});
+
+const deleteUser = catchAsync(async (req, res, next) => {
+  const body = req.body;
+});
 
 module.exports = {
   getUsers,
   getUser,
-  createUser,
+  // createUser,
   updateUser,
   deleteUser,
 };
