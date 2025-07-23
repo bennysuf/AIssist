@@ -17,9 +17,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   prompt.init(
     {
-      assistant_id: DataTypes.INTEGER,
-      promptType: DataTypes.STRING,
-      promptText: DataTypes.STRING,
+      assistant_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: false },
+      },
+      promptType: { type: DataTypes.STRING, allowNull: false },
+      promptText: { type: DataTypes.STRING, allowNull: false },
     },
     {
       sequelize,

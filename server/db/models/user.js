@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const bcrypt = require("bcrypt");
-const AppError = require("../../utils/appError")
+const AppError = require("../../utils/appError");
 
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
@@ -19,14 +19,58 @@ module.exports = (sequelize, DataTypes) => {
   }
   user.init(
     {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      email: DataTypes.STRING,
-      phone: DataTypes.INTEGER,
-      password: DataTypes.STRING,
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "firstName cannot be null" },
+          notEmpty: { msg: "firstName cannot be empty" },
+        },
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "lastName cannot be null" },
+          notEmpty: { msg: "lastName cannot be empty" },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "email cannot be null" },
+          notEmpty: { msg: "email cannot be empty" },
+          isEmail: { msg: "Invalid email" },
+        },
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "Phone number cannot be null" },
+          notEmpty: { msg: "Phone number cannot be empty" },
+          is: {
+            args: /^[0-9]{10,15}$/, // Only digits, length 10-15
+            msg: "Please enter a valid phone number"
+          },
+        },
+      
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: "password cannot be null" },
+          notEmpty: { msg: "password cannot be empty" },
+        },
+      },
       confirmPassword: {
         type: DataTypes.VIRTUAL,
         set(value) {
+          if (this.password.length < 7) {
+            throw new AppError("Password length must be greater than 7", 400);
+          }
           if (value === this.password) {
             const hashPassword = bcrypt.hashSync(value, 10);
             this.setDataValue("password", hashPassword);

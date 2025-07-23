@@ -25,10 +25,26 @@ module.exports = (sequelize, DataTypes) => {
   }
   assistant.init(
     {
-      apiKey: DataTypes.STRING,
-      role: DataTypes.STRING,
-      user_id: DataTypes.INTEGER,
-      companyName: DataTypes.STRING,
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: false },
+      },
+      apiKey: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      companyName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "companyName cannot be empty" },
+        },
+      },
     },
     {
       sequelize,
