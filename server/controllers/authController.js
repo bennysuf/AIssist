@@ -63,4 +63,29 @@ const login = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports = { signup, login };
+const authentication = catchAsync(async (req, res, next) => {
+  let idToken = "";
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    idToken = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!idToken) {
+    return next(new AppError("Please login to get access", 401));
+  }
+
+  const tokenDetail = jwt.verify(idToken, process.env.JWT_SECRET_KEY);
+
+  const authUser = await user.findByPk(tokenDetail.id);
+
+  if (!authUser) {
+    return next(new AppError("User no longer exists", 400));
+  }
+
+  req.user = authUser;
+  return next();
+});
+
+module.exports = { signup, login, authentication };
