@@ -1,4 +1,4 @@
-const user = require("../db/models/user");
+const {user} = require("../db/models");
 const catchAsync = require("../utils/catchAsync");
 
 const getUser = catchAsync(async (req, res, next) => {

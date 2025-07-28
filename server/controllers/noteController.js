@@ -1,4 +1,4 @@
-const note = require("../db/models/note");
+const {note} = require("../db/models");
 const catchAsync = require("../utils/catchAsync");
 
 const createNote = catchAsync(async (req, res, next) => {

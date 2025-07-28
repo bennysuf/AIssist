@@ -1,4 +1,4 @@
-const prompt = require("../db/models/prompt");
+const {prompt} = require("../db/models");
 const catchAsync = require("../utils/catchAsync");
 
 const createPrompt = catchAsync(async (req, res, next) => {
