@@ -40,6 +40,10 @@ const globalErrorHandler = (err, req, res, next) => {
     err = new AppError(err.errors[0].message, 400);
   }
 
+  if (err.name === "JsonWebTokenError") {
+    err = new AppError("Invalid token", 401);
+  }
+
   if (process.env.NODE_ENV === "development") {
     return sendErrorDev(err, res);
   }
