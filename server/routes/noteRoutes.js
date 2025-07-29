@@ -1,9 +1,24 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-const { createNote } = require("../controllers/noteController");
+const {
+  createNote,
+  getNoteById,
+  updateNote,
+  deleteNote,
+  getAllNotes,
+} = require("../controllers/noteController");
 const { authentication } = require("../controllers/authController");
 
-router.route("/").post(authentication, createNote);
+router
+  .route("/")
+  .post(authentication, createNote)
+  .get(authentication, getAllNotes);
+
+router
+  .route("/:id")
+  .get(authentication, getNoteById)
+  .patch(authentication, updateNote)
+  .delete(authentication, deleteNote);
 
 module.exports = router;

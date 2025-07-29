@@ -21,4 +21,10 @@ router
   .patch(authentication, updateAssistant)
   .delete(authentication, deleteAssistant);
 
+const promptRoutes = require("./promptRoutes");
+router.use("/:assistantId/prompt", promptRoutes);
+
+const noteRoutes = require("./noteRoutes");
+router.use("/:assistantId/note", noteRoutes);
+
 module.exports = router;
