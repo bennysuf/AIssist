@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       assistant.hasMany(models.prompt, {
-        foreignKey: "prompt_id",
+        foreignKey: "assistant_id",
         as: "prompt",
       });
       assistant.hasMany(models.note, {
-        foreignKey: "note_id",
+        foreignKey: "assistant_id",
         as: "note",
       });
     }
