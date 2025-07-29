@@ -4,9 +4,11 @@ const bcrypt = require("bcrypt");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
+const expDays = Number(process.env.JWT_EXPIRES_IN_DAYS);
+
 const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+    expiresIn: `${expDays}d`,
   });
 };
 
@@ -57,26 +59,32 @@ const login = catchAsync(async (req, res, next) => {
     id: result.id,
   });
 
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // ⚠️ only true on HTTPS
+    sameSite: "lax", // 'strict' or 'none' depending on use case
+    maxAge: expDays * 24 * 60 * 60 * 1000,
+  });
+
   return res.json({
     status: "success",
-    message: token,
+    message: result,
   });
 });
 
 const authentication = catchAsync(async (req, res, next) => {
-  let idToken = "";
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    idToken = req.headers.authorization.split(" ")[1];
-  }
+  const token = req.cookies.token;
 
-  if (!idToken) {
+  if (!token) {
     return next(new AppError("Please login to get access", 401));
   }
 
-  const tokenDetail = jwt.verify(idToken, process.env.JWT_SECRET_KEY);
+  let tokenDetail;
+  try {
+    tokenDetail = jwt.verify(token, process.env.JWT_SECRET_KEY);
+  } catch (err) {
+    return next(new AppError("Invalid or expired token", 401));
+  }
 
   const authUser = await user.findByPk(tokenDetail.id);
 

@@ -1,15 +1,21 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 require("dotenv").config();
 const catchAsync = require("./utils/catchAsync");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
-const { PORT, URL } = process.env;
+const { CLIENT_PORT, URL, SERVER_PORT } = process.env;
 
-app.use(cors(URL + PORT));
+app.use(cookieParser());
 app.use(express.json());
+
+app.use(cors({
+  origin: `${URL}${CLIENT_PORT}`,
+  credentials: true,
+}));
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/users", userRoutes);
@@ -29,6 +35,6 @@ app.use(
 
 app.use(globalErrorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(SERVER_PORT, () => {
+  console.log(`Server running on port ${SERVER_PORT}`);
 });
