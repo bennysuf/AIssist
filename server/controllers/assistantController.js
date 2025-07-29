@@ -34,19 +34,23 @@ const getAllAssistants = catchAsync(async (req, res, next) => {
 
 const getAssistantById = catchAsync(async (req, res, next) => {
   const assistant_id = req.params.id;
+  const userId = req.user.id;
 
-  const result = await assistant.findByPk(assistant_id, {
-    include: [
-      {
-        model: user,
-        as: "user",
-        // attributes: ["firstName", "lastName"]
-      },
-    ],
-  });
+  const result = await assistant.findOne(
+    { where: { id: assistant_id, user_id: userId } },
+    {
+      include: [
+        {
+          model: user,
+          as: "user",
+          // attributes: ["firstName", "lastName"]
+        },
+      ],
+    }
+  );
 
   if (!result) {
-    return next(new AppError("Invalid assistant id", 400));
+    return next(new AppError("Assistant not found or access denied", 403));
   }
 
   return res.json({
@@ -66,7 +70,7 @@ const updateAssistant = catchAsync(async (req, res, next) => {
   });
 
   if (!result) {
-    return next(new AppError("Invalid assistant id", 400));
+    return next(new AppError("Assistant not found or access denied", 403));
   }
 
   result.apiKey = body.apiKey;
@@ -91,10 +95,10 @@ const deleteAssistant = catchAsync(async (req, res, next) => {
   });
 
   if (!result) {
-    return next(new AppError("Invalid assistant id", 400));
+    return next(new AppError("Assistant not found or access denied", 403));
   }
 
-  const updatedResult = await result.destroy();
+  await result.destroy();
 
   return res.json({
     status: "success",
