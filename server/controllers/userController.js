@@ -1,25 +1,40 @@
-const {user} = require("../db/models");
+const { user, assistant } = require("../db/models");
 const catchAsync = require("../utils/catchAsync");
 
 const getUser = catchAsync(async (req, res, next) => {
-  const body = req.body;
+  const { firstName, lastName, email, phone, id } = req.user;
+  return res.json({
+    status: "success",
+    data: { firstName, lastName, email, phone, id },
+  });
 });
 
 const getUsers = catchAsync(async (req, res, next) => {
-  const body = req.body;
+  const result = await user.findAll({
+    include: [{ model: assistant, as: "assistants" }],
+  });
+
+  return res.json({
+    status: "success",
+    data: result,
+  });
 });
 
-// const createUser = catchAsync(async (req, res, next) => {
-//   const body = req.body;
+const getUserById = catchAsync(async (req, res, next) => {
+  const result = await user.findOne({
+    where: { id: req.params.userId },
+    include: [{ model: assistant, as: "assistants" }],
+  });
 
-//   const newUser = await user.create({
-//     firstName: body.firstName,
-//     lastName: body.lastName,
-//     email: body.email,
-//     phone: body.phone,
+  if (!result) {
+    return next(new AppError("Assistant not found or access denied", 403));
+  }
 
-//   })
-// });
+  return res.json({
+    status: "success",
+    data: result,
+  });
+});
 
 const updateUser = catchAsync(async (req, res, next) => {
   const body = req.body;
@@ -32,7 +47,7 @@ const deleteUser = catchAsync(async (req, res, next) => {
 module.exports = {
   getUsers,
   getUser,
-  // createUser,
+  getUserById,
   updateUser,
   deleteUser,
 };
