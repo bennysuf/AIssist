@@ -1,4 +1,4 @@
-const { user } = require("../db/models");
+const { user, assistant } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const catchAsync = require("../utils/catchAsync");
@@ -66,10 +66,19 @@ const login = catchAsync(async (req, res, next) => {
     maxAge: expDays * 24 * 60 * 60 * 1000,
   });
 
-  return res.json({
+  return res.status(200).json({
     status: "success",
-    message: result,
+    message: "User logged in successfully",
   });
+});
+
+const logout = catchAsync(async (req, res, next) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+  return res.json({ status: "success", message: "Logged out" });
 });
 
 const authentication = catchAsync(async (req, res, next) => {
@@ -86,7 +95,10 @@ const authentication = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid or expired token", 401));
   }
 
-  const authUser = await user.findByPk(tokenDetail.id);
+  const authUser = await user.findOne(
+    { where: { id: tokenDetail.id } },
+    { include: [{ model: assistant, as: "assistant" }] }
+  );
 
   if (!authUser) {
     return next(new AppError("User no longer exists", 400));
@@ -96,4 +108,4 @@ const authentication = catchAsync(async (req, res, next) => {
   return next();
 });
 
-module.exports = { signup, login, authentication };
+module.exports = { signup, login, logout, authentication };
