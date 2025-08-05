@@ -36,18 +36,16 @@ const getAssistantById = catchAsync(async (req, res, next) => {
   const assistant_id = req.params.id;
   const userId = req.user.id;
 
-  const result = await assistant.findOne(
-    { where: { id: assistant_id, user_id: userId } },
-    {
-      include: [
-        {
-          model: user,
-          as: "user",
-          // attributes: ["firstName", "lastName"]
-        },
-      ],
-    }
-  );
+  const result = await assistant.findOne({
+    where: { id: assistant_id, user_id: userId },
+    include: [
+      {
+        model: user,
+        as: "user",
+        // attributes: ["firstName", "lastName"]
+      },
+    ],
+  });
 
   if (!result) {
     return next(new AppError("Assistant not found or access denied", 403));
