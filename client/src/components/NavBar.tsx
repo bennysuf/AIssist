@@ -2,33 +2,32 @@ import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../util/stores/userStore";
 import { useAuthStore, useLogout } from "../util/stores/authStore";
 
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-// import InboxIcon from "@mui/icons-material/MoveToInbox";
-// import MailIcon from "@mui/icons-material/Mail";
+import { useState } from "react";
 
 import {
-  // Menu as MenuIcon,
-  Home as HomeIcon,
-  Person as PersonIcon,
-  Settings as SettingsIcon,
-  Analytics as AnalyticsIcon,
-  // Logout as LogoutIcon,
-  Dashboard as DashboardIcon,
-} from "@mui/icons-material";
+  Box,
+  Drawer,
+  Button,
+  List,
+  ListItem,
+  Divider,
+  ListItemButton,
+  HomeIcon,
+  PersonIcon,
+  SettingsIcon,
+  AnalyticsIcon,
+  LogoutIcon,
+  DashboardIcon,
+  LoginIcon,
+  Typography,
+  MenuIcon,
+} from "../util/muiExports";
 
 interface MenuItem {
   text: string;
   icon: React.ReactNode;
   href: string;
+  order: number;
 }
 
 function NavBar() {
@@ -37,15 +36,45 @@ function NavBar() {
   const logout = useLogout();
   const navigate = useNavigate();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const menuItems: MenuItem[] = [
-    { text: "Home", icon: <HomeIcon />, href: "/" },
-    { text: "Dashboard", icon: <DashboardIcon />, href: "/dashboard" },
-    { text: "Profile", icon: <PersonIcon />, href: "/profile" },
-    { text: "Notes", icon: <AnalyticsIcon />, href: "/notes" },
-    { text: "Setup", icon: <SettingsIcon />, href: "/setup" },
+    {
+      text: "Home",
+      icon: <HomeIcon sx={{ marginRight: ".4em" }} />,
+      href: "/",
+      order: 1,
+    },
+    {
+      text: "Setup",
+      icon: <SettingsIcon sx={{ marginRight: ".4em" }} />,
+      href: "/setup",
+      order: 5,
+    },
   ];
+
+  if (isAuth) {
+    menuItems.push(
+      {
+        text: "Profile",
+        icon: <PersonIcon sx={{ marginRight: ".4em" }} />,
+        href: "/profile",
+        order: 2,
+      },
+      {
+        text: "Notes",
+        icon: <AnalyticsIcon sx={{ marginRight: ".4em" }} />,
+        href: "/notes",
+        order: 3,
+      },
+      {
+        text: "Dashboard",
+        icon: <DashboardIcon sx={{ marginRight: ".4em" }} />,
+        href: "/portal",
+        order: 4,
+      }
+    );
+  }
 
   const handleLogout = () => {
     logout();
@@ -53,53 +82,84 @@ function NavBar() {
     navigate("/login");
   };
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
-  };
-
   const navList = (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <div style={{ height: "100dvh", display: "flex", flexDirection: "column" }}>
       {user && (
-        <div style={{ margin: "1rem" }}>
-          <div style={{ margin: "1rem" }} onClick={() => navigate("/profile")}>
-            {user.firstName} {user.lastName}
-          </div>
-          <Divider />
-        </div>
-      )}
-      <List sx={{ flexGrow: 1, pt: 1 }}>
-        {menuItems.map((item: MenuItem) => (
-          <ListItem key={item.text} disablePadding>
+        <>
+          <ListItem onClick={() => navigate("/profile")}>
             <ListItemButton
-              onClick={() => navigate(item.href)}
+              sx={{
+                flexDirection: "column",
+                alignItems: "flex-start",
+                borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: "var(--color-primary-dark)",
+                },
+              }}
+            >
+              <Typography>
+                {user.firstName} {user.lastName}
+              </Typography>
+              <Typography>{user.email}</Typography>
+            </ListItemButton>
+          </ListItem>
+          <Divider variant="middle" sx={{ marginBottom: "1rem" }} />
+        </>
+      )}
+      <List sx={{ flexGrow: 1, pt: 1, marginTop: "1rem" }}>
+        {menuItems
+          .sort((a, b) => a.order - b.order)
+          .map((item: MenuItem) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton
+                onClick={() => navigate(item.href)}
+                sx={{
+                  mx: 1,
+                  borderRadius: 1,
+                  "&:hover": {
+                    backgroundColor: "var(--color-primary-dark)",
+                  },
+                }}
+              >
+                {item.icon}
+                {item.text}
+              </ListItemButton>
+            </ListItem>
+          ))}
+      </List>
+      <List>
+        <ListItem key="auth" disablePadding>
+          {isAuth ? (
+            <ListItemButton
               sx={{
                 mx: 1,
                 borderRadius: 1,
                 "&:hover": {
-                  //   backgroundColor: theme.palette.action.hover,
-                },
-                "&.active": {
-                  //   backgroundColor: theme.palette.primary.light,
-                  //   color: theme.palette.primary.contrastText,
-                  "& .MuiListItemIcon-root": {
-                    // color: theme.palette.primary.contrastText,
-                  },
+                  backgroundColor: "var(--color-primary-dark)",
                 },
               }}
+              onClick={() => handleLogout()}
             >
-              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <LogoutIcon sx={{ marginRight: ".4em" }} />
+              Logout
             </ListItemButton>
-          </ListItem>
-        ))}
+          ) : (
+            <ListItemButton
+              sx={{
+                mx: 1,
+                borderRadius: 1,
+                "&:hover": {
+                  backgroundColor: "var(--color-primary-dark)",
+                },
+              }}
+              onClick={() => navigate("/login")}
+            >
+              <LoginIcon sx={{ marginRight: ".4em" }} />
+              Login / Signup
+            </ListItemButton>
+          )}
+        </ListItem>
       </List>
-      <div style={{ justifyContent: "flex-end" }}>
-        {isAuth ? (
-          <button onClick={() => handleLogout()}>logout</button>
-        ) : (
-          <button onClick={() => navigate("/login")}>login</button>
-        )}
-      </div>
     </div>
   );
 
@@ -107,8 +167,13 @@ function NavBar() {
     <div style={{ height: "100dhv" }}>
       {/* small screen */}
       <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-        <Button onClick={toggleDrawer(true)}>Open drawer</Button>
-        <Drawer open={open} onClose={toggleDrawer(false)}>
+        <Button
+          sx={{ color: "white", zIndex: "10000", marginTop: ".4rem" }}
+          onClick={() => setOpen(true)}
+        >
+          <MenuIcon />
+        </Button>
+        <Drawer open={open} onClose={() => setOpen(false)} sx={{zIndex: "10001"}}>
           {navList}
         </Drawer>
       </Box>
@@ -119,7 +184,7 @@ function NavBar() {
           flexGrow: 1,
           display: { xs: "none", md: "flex" },
           width: "250px",
-          backgroundColor: "#1e1e2f",
+          backgroundColor: "var(--color-primary-main)",
           color: "white",
           padding: "1rem",
           flexDirection: "column",
