@@ -39,7 +39,9 @@ function App() {
             <NavBar />
           </>
         )}
-        <Box sx={{ flex: 1, padding: "1rem", marginTop: {xs: "50px"} }}>
+        <Box sx={{ flex: 1, padding: "1rem", 
+          marginTop: {xs: "50px", md: 0} 
+          }}>
           <AppRoutes />
         </Box>
       </Box>
