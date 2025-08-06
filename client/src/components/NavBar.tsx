@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUserStore } from "../util/stores/userStore";
 import { useAuthStore, useLogout } from "../util/stores/authStore";
 
@@ -35,6 +35,8 @@ function NavBar() {
   const isAuth = useAuthStore((state) => state.isAuth);
   const logout = useLogout();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const [open, setOpen] = useState(false);
 
@@ -92,6 +94,7 @@ function NavBar() {
                 flexDirection: "column",
                 alignItems: "flex-start",
                 borderRadius: "10px",
+                color: "var(--text-primary)",
                 "&:hover": {
                   backgroundColor: "var(--color-primary-dark)",
                 },
@@ -112,10 +115,16 @@ function NavBar() {
           .map((item: MenuItem) => (
             <ListItem key={item.text} disablePadding>
               <ListItemButton
+                selected={currentPath === item.href}
+                disabled={currentPath === item.href}
                 onClick={() => navigate(item.href)}
                 sx={{
                   mx: 1,
                   borderRadius: 1,
+                  color: "var(--text-primary)",
+                  "&.Mui-selected": {
+                    backgroundColor: "var(--color-primary-light)",
+                  },
                   "&:hover": {
                     backgroundColor: "var(--color-primary-dark)",
                   },
@@ -134,6 +143,7 @@ function NavBar() {
               sx={{
                 mx: 1,
                 borderRadius: 1,
+                color: "var(--text-primary)",
                 "&:hover": {
                   backgroundColor: "var(--color-primary-dark)",
                 },
@@ -148,6 +158,7 @@ function NavBar() {
               sx={{
                 mx: 1,
                 borderRadius: 1,
+                color: "var(--text-primary)",
                 "&:hover": {
                   backgroundColor: "var(--color-primary-dark)",
                 },
@@ -173,7 +184,11 @@ function NavBar() {
         >
           <MenuIcon />
         </Button>
-        <Drawer open={open} onClose={() => setOpen(false)} sx={{zIndex: "10001"}}>
+        <Drawer
+          open={open}
+          onClose={() => setOpen(false)}
+          sx={{ zIndex: "10001" }}
+        >
           {navList}
         </Drawer>
       </Box>
