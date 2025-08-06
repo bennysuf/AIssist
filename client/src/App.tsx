@@ -4,26 +4,46 @@ import AppRoutes from "./AppRoutes";
 import { useUserStore } from "./util/stores/userStore";
 import NavBar from "./components/NavBar";
 import { useLocation } from "react-router-dom";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import { useThemeStore } from "./util/stores/themeStore";
+import { lightTheme, darkTheme } from "./util/theme/theme.ts";
+import GlobalThemeVars from "./util/theme/GlobalThemeVars.tsx";
+import { Box, AppBar } from "./util/muiExports.ts";
 
 function App() {
   const fetchUser = useUserStore((state) => state.fetchUser);
   const location = useLocation();
+
+  const mode = useThemeStore((state) => state.mode);
+  const theme = mode === "light" ? lightTheme : darkTheme;
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
   return (
-    <div>
-      {!location.pathname.includes("login") && (
-        <div style={{ display: "flex", height: "100vh" }}>
-          <NavBar />
-        </div>
-      )}
-      {/* <div style={{ flex: 1, padding: "1rem", overflowY: "auto" }}> */}
-      <AppRoutes />
-      {/* </div> */}
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <GlobalThemeVars />
+      <Box sx={{ display: "flex", height: { md: "100vh" } }}>
+        {!location.pathname.includes("login") && (
+          <>
+            <AppBar
+              sx={{
+                display: { md: "none" },
+                backgroundColor: "var(--color-primary-main)",
+                width: "100%",
+                height: "50px"
+              }}
+            />
+            <NavBar />
+          </>
+        )}
+        <Box sx={{ flex: 1, padding: "1rem", marginTop: {xs: "50px"} }}>
+          <AppRoutes />
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }
 
