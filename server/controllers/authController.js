@@ -13,13 +13,19 @@ const generateToken = (payload) => {
 };
 
 const signup = catchAsync(async (req, res, next) => {
-  const body = req.body;
+  const body = req.body.user;
+
+  // const body = req.body;
+  // ! remove .user when testing in postman
+
+  if (body.password !== body.confirmPassword) {
+    return next(new AppError("Passwords don't match", 400));
+  }
 
   const newUser = await user.create({
     firstName: body.firstName,
     lastName: body.lastName,
     email: body.email,
-    phone: body.phone,
     password: body.password,
     confirmPassword: body.confirmPassword,
   });
@@ -36,9 +42,16 @@ const signup = catchAsync(async (req, res, next) => {
     id: result.id,
   });
 
+  res.cookie("token", result.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: expDays * 24 * 60 * 60 * 1000,
+  });
+
   return res.status(201).json({
     status: "success",
-    message: result,
+    message: "User signed up successfully",
   });
 });
 
