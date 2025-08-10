@@ -1,4 +1,4 @@
-import type { User } from "./userDtos";
+import type { SignupUser } from "./userDtos";
 
 export type AuthState = {
   isLoading: boolean;
@@ -6,10 +6,6 @@ export type AuthState = {
   isAuth: boolean;
   setIsAuth(param: boolean): void;
   login(email: string, password: string): Promise<boolean>;
-  signup(
-    user: User,
-    password: string,
-    passwordConfirmation: string
-  ): Promise<void>;
+  signup(user: SignupUser): Promise<boolean>;
   logout(): void;
 };
