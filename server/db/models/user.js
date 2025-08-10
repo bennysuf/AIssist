@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: {
+          name: "unique_email",
+          msg: "Email already in use",
+        },
         validate: {
           notNull: { msg: "email cannot be null" },
           notEmpty: { msg: "email cannot be empty" },
@@ -49,13 +53,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: { msg: "Phone number cannot be null" },
-          notEmpty: { msg: "Phone number cannot be empty" },
           is: {
             args: /^[0-9]{10,15}$/, // Only digits, length 10-15
-            msg: "Please enter a valid phone number"
+            msg: "Please enter a valid phone number",
           },
         },
-      
       },
       password: {
         type: DataTypes.STRING,
