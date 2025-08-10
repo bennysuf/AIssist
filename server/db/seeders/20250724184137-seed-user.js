@@ -8,7 +8,7 @@ module.exports = {
       {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'user_1@email.com',
+        email: 'user1@email.com',
         phone: '1234567890',
         password: hashedPassword,
         createdAt: new Date(),
@@ -17,7 +17,7 @@ module.exports = {
       {
         firstName: 'Jane',
         lastName: 'Smith',
-        email: 'user_2@email.com',
+        email: 'user2@email.com',
         phone: '2345678901',
         password: hashedPassword,
         createdAt: new Date(),
@@ -26,7 +26,7 @@ module.exports = {
       {
         firstName: 'Alice',
         lastName: 'Johnson',
-        email: 'user_3@email.com',
+        email: 'user3@email.com',
         phone: '3456789012',
         password: hashedPassword,
         createdAt: new Date(),
@@ -35,7 +35,7 @@ module.exports = {
       {
         firstName: 'Bob',
         lastName: 'Brown',
-        email: 'user_4@email.com',
+        email: 'user4@email.com',
         phone: '4567890123',
         password: hashedPassword,
         createdAt: new Date(),
