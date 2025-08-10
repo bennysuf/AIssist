@@ -26,22 +26,20 @@ function App() {
       <CssBaseline />
       <GlobalThemeVars />
       <Box sx={{ display: "flex", height: { md: "100vh" } }}>
-        {!location.pathname.includes("login") && (
+        {!location.pathname.includes("auth") && (
           <>
             <AppBar
               sx={{
-                display: { md: "none" },
+                display: { sm: "none" },
                 backgroundColor: "var(--color-primary-main)",
                 width: "100%",
-                height: "50px"
+                height: "50px",
               }}
             />
             <NavBar />
           </>
         )}
-        <Box sx={{ flex: 1, padding: "1rem", 
-          marginTop: {xs: "50px", md: 0} 
-          }}>
+        <Box sx={{ flex: 1, marginTop: { xs: "50px", sm: 0, md: 0 } }}>
           <AppRoutes />
         </Box>
       </Box>
