@@ -81,7 +81,7 @@ function NavBar() {
   const handleLogout = () => {
     logout();
     console.log("logged out");
-    navigate("/login");
+    navigate("/auth/login");
   };
 
   const navList = (
@@ -163,7 +163,7 @@ function NavBar() {
                   backgroundColor: "var(--color-primary-dark)",
                 },
               }}
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/auth/login")}
             >
               <LoginIcon sx={{ marginRight: ".4em" }} />
               Login / Signup
