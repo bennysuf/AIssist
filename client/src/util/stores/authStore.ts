@@ -32,19 +32,24 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  signup: async (name, email, password) => {
+  signup: async (userData) => {
     set({ isLoading: true, error: null });
     try {
-      await authApi.signup(name, email, password);
-      set({ isAuth: true });
-      // ! make sure fetch works right after signup
+      const res = await authApi.signup(userData);
+      if (res !== 201) {
+        set({ error: "An unknown error occurred" });
+        return false;
+      }
+      set({ isLoading: false, isAuth: true });
       useUserStore.getState().fetchUser();
+      return true;
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "An unknown error occurred";
+        err instanceof AxiosError
+          ? err.response?.data?.message
+          : "An unknown error occurred";
       set({ error: message });
-    } finally {
-      set({ isLoading: false });
+      return false;
     }
   },
 
@@ -62,3 +67,4 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 export const useLogout = () => useAuthStore((state) => state.logout);
 export const useLogin = () => useAuthStore((state) => state.login);
+export const useSignup = () => useAuthStore((state) => state.signup);
