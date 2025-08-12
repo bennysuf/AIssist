@@ -18,7 +18,7 @@ function Authentication() {
   return (
     <Box
       sx={{
-        marginTop: { xs: "-50px", sm: 0 },
+        margin: { sm: "-0.5rem" },
         display: "flex",
         height: "100vh",
       }}
