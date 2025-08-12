@@ -3,7 +3,7 @@ import "./App.css";
 import AppRoutes from "./AppRoutes";
 import { useUserStore } from "./util/stores/userStore";
 import NavBar from "./components/NavBar";
-import TopBar from "./components/AppBar";
+import TopBar from "./components/TopBar.tsx";
 import { useLocation } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { useThemeStore } from "./util/stores/themeStore";
