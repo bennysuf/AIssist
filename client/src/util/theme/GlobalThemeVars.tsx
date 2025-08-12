@@ -1,47 +1,48 @@
 // GlobalThemeVars.tsx
-import { GlobalStyles } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { GlobalStyles } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const GlobalThemeVars = () => {
   const theme = useTheme();
+  const palette = theme.palette;
 
   return (
     <GlobalStyles
       styles={{
-        ':root': {
+        ":root": {
           // Primary Colors
-          '--color-primary-main': theme.palette.primary.main,
-          '--color-primary-light': theme.palette.primary.light,
-          '--color-primary-dark': theme.palette.primary.dark,
+          "--color-primary-main": palette.primary.main,
+          "--color-primary-light": palette.primary.light,
+          "--color-primary-dark": palette.primary.dark,
 
           // Secondary Colors
-          '--color-secondary-main': theme.palette.secondary.main,
-          '--color-secondary-light': theme.palette.secondary.light,
+          "--color-secondary-main": palette.secondary.main,
+          "--color-secondary-light": palette.secondary.light,
 
           // Backgrounds
-          '--bg-default': theme.palette.background.default,
-          '--bg-paper': theme.palette.background.paper,
+          "--bg-default": palette.background.default,
+          "--bg-paper": palette.background.paper,
 
           // Text
-          '--text-primary': theme.palette.text.primary,
-          '--text-secondary': theme.palette.text.secondary,
-          '--text-disabled': theme.palette.text.disabled,
+          "--text-primary": palette.text.primary,
+          "--text-secondary": palette.text.secondary,
+          "--text-disabled": palette.text.disabled,
 
           // Divider
-          '--divider': theme.palette.divider,
+          "--divider": palette.divider,
 
           // Custom
-          '--note-border': theme.palette.custom.noteBorder,
-          '--note-highlight': theme.palette.custom.noteHighlight,
-          '--note-completed-bg': theme.palette.custom.completedBackground,
-          '--tag-bg': theme.palette.custom.tagBackground,
-          '--placeholder-text': theme.palette.custom.placeholderText,
-          '--selected-item': theme.palette.custom.selectedItem,
-          '--hover-bg': theme.palette.custom.hoverBackground,
-          '--focus-ring': theme.palette.custom.focusRing,
+          "--note-border": palette.custom.noteBorder,
+          "--note-highlight": palette.custom.noteHighlight,
+          "--note-completed-bg": palette.custom.completedBackground,
+          "--tag-bg": palette.custom.tagBackground,
+          "--placeholder-text": palette.custom.placeholderText,
+          "--selected-item": palette.custom.selectedItem,
+          "--hover-bg": palette.custom.hoverBackground,
+          "--focus-ring": palette.custom.focusRing,
 
           // Typography
-          '--font-family': theme.typography.fontFamily,
+          "--font-family": theme.typography.fontFamily,
         },
       }}
     />
