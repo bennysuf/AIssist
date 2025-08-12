@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { useLogin, useAuthStore } from "../util/stores/authStore";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Typography, TextField } from "../util/muiExports";
-import {} from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  TextField,
+  VisibilityOffIcon,
+  RemoveRedEyeIcon,
+} from "../util/muiExports";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [visiblePassword, setVisiblePassword] = useState<boolean>(false);
 
   const error = useAuthStore((state) => state.error);
   const login = useLogin();
@@ -29,6 +36,7 @@ function LoginForm() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        width: {xs: "75%"}
       }}
     >
       <Typography>Welcome Back!</Typography>
@@ -59,12 +67,27 @@ function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <TextField
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <TextField
+            type={visiblePassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Box
+            onClick={() => setVisiblePassword(!visiblePassword)}
+            sx={{ color: "var(--color-primary-main)" }}
+          >
+            {visiblePassword ? <VisibilityOffIcon /> : <RemoveRedEyeIcon />}
+          </Box>
+        </Box>
         {error && <p>{error}</p>}
         <Button
           type="submit"
