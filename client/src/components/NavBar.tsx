@@ -2,12 +2,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useUserStore } from "../util/stores/userStore";
 import { useAuthStore, useLogout } from "../util/stores/authStore";
 
-import { useState } from "react";
+// import { useState } from "react";
 
 import {
   Box,
   Drawer,
-  Button,
+  // Button,
   List,
   ListItem,
   Divider,
@@ -20,8 +20,8 @@ import {
   DashboardIcon,
   LoginIcon,
   Typography,
-  MenuIcon,
 } from "../util/muiExports";
+import { Badge } from "@mui/material";
 
 interface MenuItem {
   text: string;
@@ -30,15 +30,18 @@ interface MenuItem {
   order: number;
 }
 
-function NavBar() {
+type Props = {
+  setNavBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  navBarOpen: boolean;
+};
+
+function NavBar({ setNavBarOpen, navBarOpen }: Props) {
   const user = useUserStore((state) => state.user);
   const isAuth = useAuthStore((state) => state.isAuth);
   const logout = useLogout();
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-
-  const [open, setOpen] = useState(false);
 
   const menuItems: MenuItem[] = [
     {
@@ -88,16 +91,18 @@ function NavBar() {
     <div style={{ height: "100dvh", display: "flex", flexDirection: "column" }}>
       {user && (
         <>
-          <ListItem onClick={() => navigate("/profile")}>
+          <ListItem
+            onClick={() => {
+              navigate("/profile");
+              setNavBarOpen(false);
+            }}
+          >
             <ListItemButton
               sx={{
                 flexDirection: "column",
                 alignItems: "flex-start",
                 borderRadius: "10px",
                 color: "var(--text-primary)",
-                "&:hover": {
-                  backgroundColor: "var(--color-primary-dark)",
-                },
               }}
             >
               <Typography>
@@ -113,26 +118,46 @@ function NavBar() {
         {menuItems
           .sort((a, b) => a.order - b.order)
           .map((item: MenuItem) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                selected={currentPath === item.href}
-                disabled={currentPath === item.href}
-                onClick={() => navigate(item.href)}
+            <ListItem key={item.text}>
+              <Badge
+              // TODO: change 1 to user.notes.unread.length
+                badgeContent={item.text === "Notes" ? 1 : 0}
+                color="primary"
                 sx={{
-                  mx: 1,
-                  borderRadius: 1,
-                  color: "var(--text-primary)",
-                  "&.Mui-selected": {
-                    backgroundColor: "var(--color-primary-light)",
-                  },
-                  "&:hover": {
+                  "& .MuiBadge-badge": {
                     backgroundColor: "var(--color-primary-dark)",
+                    top: 20,
+                    right: 7
                   },
                 }}
               >
-                {item.icon}
-                {item.text}
-              </ListItemButton>
+                <ListItemButton
+                  selected={currentPath === item.href}
+                  disabled={currentPath === item.href}
+                  onClick={() => {
+                    navigate(item.href);
+                    setNavBarOpen(false);
+                  }}
+                  sx={{
+                    width: "150px",
+                    mx: 1,
+                    borderRadius: 1,
+                    color: "var(--text-primary)",
+                    "&.Mui-selected": {
+                      backgroundColor: "var(--color-primary-light)",
+                    },
+                    "&:hover": {
+                      backgroundColor: { sm: "var(--color-primary-dark)" },
+                    },
+                    "&.Mui-selected:hover": {
+                      backgroundColor: "var(--color-primary-light)",
+                    },
+                  }}
+                >
+                  {item.icon}
+                  {item.text}
+                </ListItemButton>
+              </Badge>
             </ListItem>
           ))}
       </List>
@@ -177,18 +202,8 @@ function NavBar() {
   return (
     <div style={{ height: "100dhv" }}>
       {/* small screen */}
-      <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-        <Button
-          sx={{ color: "white", zIndex: "10000", marginTop: ".4rem" }}
-          onClick={() => setOpen(true)}
-        >
-          <MenuIcon />
-        </Button>
-        <Drawer
-          open={open}
-          onClose={() => setOpen(false)}
-          sx={{ zIndex: "10001" }}
-        >
+      <Box sx={{ flexGrow: 1 }}>
+        <Drawer open={navBarOpen} onClose={() => setNavBarOpen(false)}>
           {navList}
         </Drawer>
       </Box>
@@ -197,9 +212,10 @@ function NavBar() {
       <Box
         sx={{
           flexGrow: 1,
-          display: { xs: "none", md: "flex" },
-          width: "250px",
-          backgroundColor: "var(--color-primary-main)",
+          display: { xs: "none", sm: "flex" },
+          width: "220px",
+          backgroundColor: "var(--bg-default)",
+          // backgroundColor: "var(--color-primary-main)",
           color: "white",
           padding: "1rem",
           flexDirection: "column",
