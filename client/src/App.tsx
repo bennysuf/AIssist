@@ -1,16 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
 import { useUserStore } from "./util/stores/userStore";
 import NavBar from "./components/NavBar";
+import TopBar from "./components/AppBar";
 import { useLocation } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { useThemeStore } from "./util/stores/themeStore";
 import { lightTheme, darkTheme } from "./util/theme/theme.ts";
 import GlobalThemeVars from "./util/theme/GlobalThemeVars.tsx";
-import { Box, AppBar } from "./util/muiExports.ts";
+import { Box } from "./util/muiExports.ts";
 
 function App() {
+  const [navBarOpen, setNavBarOpen] = useState<boolean>(false);
   const fetchUser = useUserStore((state) => state.fetchUser);
   const location = useLocation();
 
@@ -22,28 +24,34 @@ function App() {
   }, [fetchUser]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <GlobalThemeVars />
-      <Box sx={{ display: "flex", height: { md: "100vh" } }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
+        height: "100vh",
+      }}
+    >
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <GlobalThemeVars />
         {!location.pathname.includes("auth") && (
           <>
-            <AppBar
-              sx={{
-                display: { sm: "none" },
-                backgroundColor: "var(--color-primary-main)",
-                width: "100%",
-                height: "50px",
-              }}
-            />
-            <NavBar />
+            <TopBar setNavBarOpen={setNavBarOpen} navBarOpen={navBarOpen} />
+            <NavBar setNavBarOpen={setNavBarOpen} navBarOpen={navBarOpen} />
           </>
         )}
-        <Box sx={{ flex: 1, marginTop: { xs: "50px", sm: 0, md: 0 } }}>
+        <Box
+          sx={{
+            flex: 1,
+            margin: { sm: ".5em" },
+            backgroundColor: "var(--bg-paper)",
+            borderRadius: { sm: "20px" },
+          }}
+        >
           <AppRoutes />
         </Box>
-      </Box>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Box>
   );
 }
 
