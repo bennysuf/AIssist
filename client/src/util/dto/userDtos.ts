@@ -1,9 +1,12 @@
+import type { Assistant } from "./assistantDto";
+
 export type User = {
   id: number;
   email: string;
   firstName: string;
   lastName: string;
   phone: string;
+  assistants: Assistant[] | [];
 };
 
 export type UserState = {
