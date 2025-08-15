@@ -64,19 +64,19 @@ function NavBar({ setNavBarOpen, navBarOpen }: Props) {
         text: "Profile",
         icon: <PersonIcon sx={{ marginRight: ".4em" }} />,
         href: "/profile",
-        order: 2,
+        order: 4,
       },
       {
-        text: "Notes",
+        text: "Inbox",
         icon: <AnalyticsIcon sx={{ marginRight: ".4em" }} />,
-        href: "/notes",
-        order: 3,
+        href: "/inbox",
+        order: 2,
       },
       {
         text: "Dashboard",
         icon: <DashboardIcon sx={{ marginRight: ".4em" }} />,
         href: "/portal",
-        order: 4,
+        order: 3,
       }
     );
   }
