@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       });
       assistant.hasMany(models.prompt, {
         foreignKey: "assistant_id",
-        as: "prompt",
+        as: "prompts",
       });
       assistant.hasMany(models.note, {
         foreignKey: "assistant_id",
-        as: "note",
+        as: "notes",
       });
     }
   }
@@ -49,6 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "assistant",
+      defaultScope: {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      }
     }
   );
   return assistant;
