@@ -12,6 +12,7 @@ const { authentication } = require("../controllers/authController");
 // ! dynamic route of /:id needs to be last, any req to user/* will be read as param var
 // ! page reads top to bottom
 
+// gets logged in user, via authentication
 router.route("/").get(authentication, getUser);
 
 router.route("/all").get(authentication, getUsers);
