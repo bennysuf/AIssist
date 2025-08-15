@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: { notEmpty: false },
       },
-      noteName: {
+      callerName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -30,10 +30,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      noteSummery: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      markedRead: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       modelName: "note",
+      defaultScope: {
+        attributes: { exclude: ['updatedAt'] },
+      }
     }
   );
   return note;
