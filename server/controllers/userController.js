@@ -1,11 +1,33 @@
-const { user, assistant } = require("../db/models");
+const { user, assistant, prompt } = require("../db/models");
 const catchAsync = require("../utils/catchAsync");
 
 const getUser = catchAsync(async (req, res, next) => {
-  const { firstName, lastName, email, phone, id } = req.user;
+  const result = await user.findOne({
+    where: { id: req.user.id },
+    attributes: { exclude: ["password"] },
+    include: [
+      {
+        model: assistant,
+        as: "assistants",
+        attributes: { exclude: ["createdAt", "updatedAt", "user_id"] },
+        include: [
+          {
+            model: prompt,
+            as: "prompts",
+            attributes: { exclude: ["createdAt", "updatedAt", "assistant_id"] },
+          },
+        ],
+      },
+    ],
+  });
+
+  if (!result) {
+    return next(new AppError("User not found or access denied", 403));
+  }
+
   return res.json({
     status: "success",
-    data: { firstName, lastName, email, phone, id },
+    data: result,
   });
 });
 
@@ -27,7 +49,7 @@ const getUserById = catchAsync(async (req, res, next) => {
   });
 
   if (!result) {
-    return next(new AppError("Assistant not found or access denied", 403));
+    return next(new AppError("User not found or access denied", 403));
   }
 
   return res.json({
