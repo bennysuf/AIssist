@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "prompt",
+      defaultScope: {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      }
     }
   );
   return prompt;
