@@ -3,9 +3,14 @@ import {
   Box,
   Button,
   FilterAltIcon,
+  Grid,
   MenuItem,
   Select,
   Typography,
+  Paper,
+  VisibilityIcon,
+  VisibilityOffIcon,
+  Tooltip,
 } from "../util/muiExports";
 import {
   useNoteStore,
@@ -39,10 +44,39 @@ function Inbox() {
     loadInitialNotes();
   }, [filter, user]);
 
+  const formatDate = (date: Date) => {
+    let formattedDate = date.toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      //   year: "numeric",
+    });
+    const time12 = date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    return { date: formattedDate, time: time12 };
+  };
+
+  //   console.log("from inbox page: ", notes);
+
   const markAsRead = () => {};
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        flex: 1,
+        overflowY: "scroll",
+        paddingBottom: "10px",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none" as const,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -60,11 +94,11 @@ function Inbox() {
           border: "2px solid #ccc",
           borderRadius: "20px",
           fontSize: "1rem",
-          margin: "2rem",
-          height: "75px",
+          margin: "1rem 2rem",
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          backgroundColor: "#fff",
         }}
       >
         <FilterAltIcon
@@ -84,10 +118,96 @@ function Inbox() {
           <MenuItem value={"unread"}>Unread</MenuItem>
           <MenuItem value={"read"}>Read</MenuItem>
         </Select>
-        {/* search bar, and amount of messages */}
       </Box>
-      {/* no messages display or grid of cards */}
-      {/* set up load more option. if hasMore: display load more button */}
+      <Box sx={{}}>
+        {notes.length < 1 ? (
+          <Typography>no notes</Typography>
+        ) : (
+          <Grid
+            container
+            direction="row"
+            sx={{
+              gap: "1em",
+              marginTop: "1em",
+              paddingBottom: "10px",
+            }}
+          >
+            {notes.map((note, index) => {
+              // TODO: onClick of paper, have popup with full text
+              const {
+                callerName,
+                noteSummery,
+                noteText,
+                markedRead,
+                createdAt,
+              } = note;
+              const createdDate = formatDate(new Date(createdAt));
+              if (createdDate.date === formatDate(new Date()).date) {
+                createdDate.date = "Today";
+              }
+              return (
+                <Paper
+                  key={index}
+                  elevation={0}
+                  sx={{
+                    width: "100%",
+                    height: "10rem",
+                    position: "relative",
+                    padding: "15px",
+                    bgcolor: "var(--bg-default)",
+                    margin: "0 2rem",
+                    borderRadius: "20px",
+                    border: "1px solid #ccc",
+                    borderLeft: markedRead
+                      ? undefined
+                      : "3px solid var(--color-primary-dark)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <Box
+                    sx={{ position: "absolute", right: 10 }}
+                    onClick={() => markAsRead()}
+                  >
+                    {/* //TODO: create mark logic */}
+                    <Tooltip
+                      title={markedRead ? "Mark as unread" : "Mark as read"}
+                      arrow
+                    >
+                      {markedRead ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </Tooltip>
+                  </Box>
+                  <Typography>{callerName}</Typography>
+                  {/* add caller phone number */}
+                  <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+                    <Typography variant="caption">123-456-7890</Typography>
+                    <Typography variant="caption">
+                      {createdDate.date} {createdDate.time}
+                    </Typography>
+                  </Box>
+                  <Typography variant="body1">{noteSummery}</Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      padding: "10px",
+                      //   border: "2px solid #ccc",
+                      // TODO: add min and max height
+                      height: "50%",
+                      width: "100%",
+                      borderRadius: "20px",
+                      bgcolor: "white",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {noteText}
+                  </Typography>
+                </Paper>
+              );
+            })}
+          </Grid>
+        )}
+      </Box>
       {hasMore && <Button onClick={() => loadMoreNotes()}>Load more</Button>}
     </Box>
   );
