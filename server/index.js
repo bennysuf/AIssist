@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const catchAsync = require("./utils/catchAsync");
 const AppError = require("./utils/appError");
@@ -12,10 +12,12 @@ const { CLIENT_PORT, URL, SERVER_PORT } = process.env;
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(cors({
-  origin: `${URL}${CLIENT_PORT}`,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: `${URL}${CLIENT_PORT}`,
+    credentials: true,
+  })
+);
 
 const userRoutes = require("./routes/userRoutes");
 app.use("/me", userRoutes);
@@ -25,6 +27,9 @@ app.use("/auth", authRoutes);
 
 const assistantRoutes = require("./routes/assistantRoutes");
 app.use("/assistant", assistantRoutes);
+
+const noteRoutes = require("./routes/noteRoutes");
+app.use("/notes", noteRoutes);
 
 // catchall to throw error
 app.use(
