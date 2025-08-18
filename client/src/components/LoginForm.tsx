@@ -7,7 +7,7 @@ import {
   Typography,
   TextField,
   VisibilityOffIcon,
-  RemoveRedEyeIcon,
+  VisibilityIcon,
 } from "../util/muiExports";
 
 function LoginForm() {
@@ -85,7 +85,7 @@ function LoginForm() {
             onClick={() => setVisiblePassword(!visiblePassword)}
             sx={{ color: "var(--color-primary-main)" }}
           >
-            {visiblePassword ? <VisibilityOffIcon /> : <RemoveRedEyeIcon />}
+            {visiblePassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
           </Box>
         </Box>
         {error && <p>{error}</p>}
