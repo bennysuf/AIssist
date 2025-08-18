@@ -10,10 +10,9 @@ const {
 } = require("../controllers/noteController");
 const { authentication } = require("../controllers/authController");
 
-router
-  .route("/")
-  .post(authentication, createNote)
-  .get(authentication, getAllNotes);
+router.route("/").post(authentication, createNote);
+
+router.route("/load_notes").get(authentication, getAllNotes);
 
 router
   .route("/:id")
