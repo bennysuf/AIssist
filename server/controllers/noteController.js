@@ -1,15 +1,17 @@
+const { Op } = require("sequelize");
 const { note, assistant } = require("../db/models");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 const createNote = catchAsync(async (req, res, next) => {
   const body = req.body;
-  const assistantId = req.params.assistantId;
 
   const newNote = await note.create({
-    assistant_id: assistantId,
-    noteName: body.noteName,
+    assistant_id: body.assistantId,
+    callerName: body.callerName,
     noteText: body.noteText,
+    noteSummery: body.noteSummery,
+    markedRead: body.markedRead,
   });
 
   return res.status(201).json({
@@ -17,15 +19,44 @@ const createNote = catchAsync(async (req, res, next) => {
     data: newNote,
   });
 });
-const getAllNotes = catchAsync(async (req, res, next) => {
-  console.log("made to note req")
-  const result = await note.findAll(
-    // {
-    // include: [{ model: assistant, as: "assistant" }],
-  // }
-);
 
-  console.log("result for note", result)
+const getAllNotes = catchAsync(async (req, res, next) => {
+  const { filter, limit, noteId, createdAt, assistantId } = req.query;
+
+  const where = {
+    assistant_id: assistantId,
+  };
+
+  // Filter by read/unread
+  if (filter === "read") {
+    where.markedRead = true;
+  } else if (filter === "unread") {
+    where.markedRead = false;
+  }
+
+  // Pagination filter
+  if (createdAt && noteId) {
+    where[Op.or] = [
+      {
+        createdAt: { [Op.lt]: createdAt },
+      },
+      {
+        //if 2 notes are created at the same time, order by id
+        createdAt: createdAt,
+        id: { [Op.lt]: noteId },
+      },
+    ];
+  }
+
+  const result = await note.findAll({
+    where,
+    order: [
+      ["createdAt", "DESC"],
+      ["id", "DESC"], // tie-breaker
+    ],
+    limit: parseInt(limit, 10),
+    // include: [{ model: assistant, as: "assistant" }],
+  });
 
   return res.json({
     status: "success",
