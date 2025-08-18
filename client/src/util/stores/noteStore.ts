@@ -8,7 +8,7 @@ export const useNoteStore = create<NoteState>((set, get) => ({
   error: null,
   filter: "all",
   assistantId: null,
-  hasMore: true,
+  hasMore: false,
 
   setHasMore: (bool) => set({ hasMore: bool }),
 
