@@ -6,7 +6,10 @@ export async function getNotes(
   filter: string,
   opts?: { before?: number }
 ): Promise<Note[]> {
-  const { data } = await axios.get("", {
+//   console.log(
+//     `notes api: assistant: ${assistantId}, filter: ${filter}, opts: ${opts}`
+//   );
+  const { data } = await axios.get("/notes/load_notes/", {
     params: {
       assistantId,
       filter,
@@ -14,7 +17,7 @@ export async function getNotes(
       ...(opts?.before && { before: opts.before }),
     },
   });
-  return data;
+  return data.data;
 }
 
 export async function updateNote(updates: Partial<Note>): Promise<Note> {
