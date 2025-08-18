@@ -208,10 +208,11 @@ function Portal() {
             marginTop: "1em",
           }}
         >
-          {user!.assistants?.map((assistant) => {
+          {user!.assistants?.map((assistant, index) => {
             const { apiKey, companyName, role, prompts } = assistant;
             return (
               <Paper
+                key={index}
                 elevation={0}
                 sx={{
                   bgcolor: "var(--bg-default)",
@@ -293,8 +294,12 @@ function Portal() {
                     }}
                   >
                     {prompts.length >= 1 &&
-                      prompts.map((prompt) => {
-                        return <Typography>{prompt.promptText}</Typography>;
+                      prompts.map((prompt, index) => {
+                        return (
+                          <Typography key={index}>
+                            {prompt.promptText}
+                          </Typography>
+                        );
                       })}
                   </Box>
                 </Paper>
