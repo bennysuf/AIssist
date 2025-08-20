@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Box,
   Button,
@@ -30,6 +30,7 @@ function Inbox() {
     setNotes,
   } = useNoteStore();
   const user = useUserStore((state) => state.user);
+  const updateNote = useNoteStore((state) => state.updateNote);
 
   const loadInitialNotes = useLoadInitialNotes();
   const loadMoreNotes = useLoadMoreNotes();
@@ -59,9 +60,13 @@ function Inbox() {
     return { date: formattedDate, time: time12 };
   };
 
-  //   console.log("from inbox page: ", notes);
-
-  const markAsRead = () => {};
+  const markAsRead = (
+    id: number,
+    assistant_id: number,
+    markedRead: boolean
+  ) => {
+    updateNote({ id, assistant_id, markedRead });
+  };
 
   return (
     <Box
@@ -135,6 +140,8 @@ function Inbox() {
             {notes.map((note, index) => {
               // TODO: onClick of paper, have popup with full text
               const {
+                id,
+                assistant_id,
                 callerName,
                 noteSummery,
                 noteText,
@@ -168,7 +175,7 @@ function Inbox() {
                 >
                   <Box
                     sx={{ position: "absolute", right: 10 }}
-                    onClick={() => markAsRead()}
+                    onClick={() => markAsRead(id, assistant_id, !markedRead)}
                   >
                     {/* //TODO: create mark logic */}
                     <Tooltip
