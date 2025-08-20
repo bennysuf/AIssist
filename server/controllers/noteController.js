@@ -92,29 +92,27 @@ const getNoteById = catchAsync(async (req, res, next) => {
 });
 
 const updateNote = catchAsync(async (req, res, next) => {
-  const { assistantId, noteId } = req.params;
-  const body = req.body;
+  const { noteId } = req.params;
+  const {assistantId, markedRead} = req.body;
 
   const result = await note.findOne({
     where: {
       id: noteId,
       assistant_id: assistantId,
     },
-    include: {
-      model: assistant,
-      as: "assistant",
-      where: {
-        user_id: req.user.id,
-      },
-    },
+    // include: {
+    //   model: assistant,
+    //   as: "assistant",
+    //   where: {
+    //     user_id: req.user.id,
+    //   },
+    // },
   });
 
   if (!result) {
     return next(new AppError("Note not found or access denied", 403));
   }
-
-  result.noteName = body.noteName;
-  result.noteText = body.noteText;
+  result.markedRead = markedRead
 
   const updatedResult = await result.save();
 
