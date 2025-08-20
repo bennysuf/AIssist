@@ -15,7 +15,7 @@ router.route("/").post(authentication, createNote);
 router.route("/load_notes").get(authentication, getAllNotes);
 
 router
-  .route("/:id")
+  .route("/:noteId")
   .get(authentication, getNoteById)
   .patch(authentication, updateNote)
   .delete(authentication, deleteNote);
