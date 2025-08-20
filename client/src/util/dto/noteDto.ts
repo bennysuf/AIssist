@@ -1,10 +1,12 @@
 export type Note = {
   id: number;
-  assistantId: number;
+  assistant_id: number;
   callerName: string;
   noteText: string;
   noteSummery: string;
   markedRead: boolean;
+  createdAt: Date;
+  // ! make sure datatype change isnt an issue for backend
 };
 
 export type NoteState = {
