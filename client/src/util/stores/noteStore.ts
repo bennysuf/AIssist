@@ -45,18 +45,25 @@ export const useNoteStore = create<NoteState>((set, get) => ({
   },
 
   updateNote: async (updates) => {
+    const { filter, notes } = get();
     set({ error: null });
     try {
-      const note = await noteApi.updateNote(updates);
-      // only part to be updated is markedRead, so just send bool
-      // TODO: update specific note within notes
-      set({ notes: [note] });
+      const res = await noteApi.updateNote(updates);
+
+      let updatedNotes = [];
+      if (filter === "all") {
+        updatedNotes = notes.map((note) =>
+          note.id === res.id ? { ...note, markedRead: res.markedRead } : note
+        );
+      } else {
+        updatedNotes = notes.filter((note) => note.id !== res.id);
+      }
+
+      set({ notes: updatedNotes });
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "An unknown error occurred";
       set({ error: message });
-    } finally {
-      // set loading to false
     }
   },
 }));
