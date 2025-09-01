@@ -23,4 +23,5 @@ export type NoteState = {
   loadInitialNotes(): Promise<void>;
   loadMoreNotes(): Promise<void>;
   updateNote(updates: Partial<Note>): Promise<void>;
+  markAllRead(markAsRead: boolean): Promise<void>;
 };
