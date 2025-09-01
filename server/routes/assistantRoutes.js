@@ -25,6 +25,6 @@ const promptRoutes = require("./promptRoutes");
 router.use("/:assistantId/prompt", promptRoutes);
 
 const noteRoutes = require("./noteRoutes");
-router.use("/:assistantId/note", noteRoutes);
+router.use("/:assistantId/notes", noteRoutes);
 
 module.exports = router;
