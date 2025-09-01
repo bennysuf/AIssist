@@ -21,7 +21,8 @@ const createNote = catchAsync(async (req, res, next) => {
 });
 
 const getAllNotes = catchAsync(async (req, res, next) => {
-  const { filter, limit, noteId, createdAt, assistantId } = req.query;
+  const { assistantId } = req.params;
+  const { filter, limit, noteId, createdAt } = req.query;
 
   const where = {
     assistant_id: assistantId,
@@ -92,8 +93,8 @@ const getNoteById = catchAsync(async (req, res, next) => {
 });
 
 const updateNote = catchAsync(async (req, res, next) => {
-  const { noteId } = req.params;
-  const {assistantId, markedRead} = req.body;
+  const { noteId, assistantId } = req.params;
+  const { markedRead } = req.body;
 
   const result = await note.findOne({
     where: {
@@ -112,13 +113,33 @@ const updateNote = catchAsync(async (req, res, next) => {
   if (!result) {
     return next(new AppError("Note not found or access denied", 403));
   }
-  result.markedRead = markedRead
+  result.markedRead = markedRead;
 
   const updatedResult = await result.save();
 
   return res.json({
     status: "success",
     data: updatedResult,
+  });
+});
+
+const markAllRead = catchAsync(async (req, res, next) => {
+  const { assistantId } = req.params;
+  const { markedRead } = req.body;
+
+  const [updatedCount, updatedRows] = await note.update(
+    { markedRead: markedRead },
+    {
+      where: { assistant_id: assistantId, markedRead: !markedRead },
+      returning: true, // need this to get updated rows
+    }
+  );
+
+  const updatedIds = updatedRows.map((row) => row.id);
+
+  return res.json({
+    status: "success",
+    data: updatedIds,
   });
 });
 
@@ -157,4 +178,5 @@ module.exports = {
   getNoteById,
   updateNote,
   deleteNote,
+  markAllRead,
 };
