@@ -31,22 +31,23 @@ function Inbox() {
   } = useNoteStore();
   const user = useUserStore((state) => state.user);
   const updateNote = useNoteStore((state) => state.updateNote);
+  const markAllRead = useNoteStore((state) => state.markAllRead);
 
   const loadInitialNotes = useLoadInitialNotes();
   const loadMoreNotes = useLoadMoreNotes();
 
   // When filter changes
   useEffect(() => {
-    const assistantId = user?.assistants[0].id ?? null;
+    const getAssistantId = user?.assistants[0].id ?? null;
 
     setNotes([]);
     setHasMore(false);
-    setAssistantId(assistantId);
+    setAssistantId(getAssistantId);
     loadInitialNotes();
   }, [filter, user]);
 
   const formatDate = (date: Date) => {
-    let formattedDate = date.toLocaleString("en-US", {
+    const formattedDate = date.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
       //   year: "numeric",
@@ -62,10 +63,13 @@ function Inbox() {
 
   const markAsRead = (
     id: number,
-    assistant_id: number,
     markedRead: boolean
   ) => {
-    updateNote({ id, assistant_id, markedRead });
+    updateNote({ id, markedRead });
+  };
+
+  const markAllAsRead = (markedRead: boolean) => {
+    markAllRead(markedRead);
   };
 
   return (
@@ -91,7 +95,12 @@ function Inbox() {
         }}
       >
         <Typography>Inbox</Typography>
-        <Button sx={{ width: "200px" }}>mark all as read</Button>
+        <Button sx={{ width: "200px" }} onClick={() => markAllAsRead(true)}>
+          mark all as read
+        </Button>
+        <Button sx={{ width: "200px" }} onClick={() => markAllAsRead(false)}>
+          mark all as unread
+        </Button>
       </Box>
       <Box
         sx={{
@@ -141,7 +150,6 @@ function Inbox() {
               // TODO: onClick of paper, have popup with full text
               const {
                 id,
-                assistant_id,
                 callerName,
                 noteSummery,
                 noteText,
@@ -175,7 +183,7 @@ function Inbox() {
                 >
                   <Box
                     sx={{ position: "absolute", right: 10 }}
-                    onClick={() => markAsRead(id, assistant_id, !markedRead)}
+                    onClick={() => markAsRead(id, !markedRead)}
                   >
                     {/* //TODO: create mark logic */}
                     <Tooltip
