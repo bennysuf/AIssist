@@ -28,8 +28,7 @@ app.use("/auth", authRoutes);
 const assistantRoutes = require("./routes/assistantRoutes");
 app.use("/assistant", assistantRoutes);
 
-const noteRoutes = require("./routes/noteRoutes");
-app.use("/notes", noteRoutes);
+// notes and params go through assistant/:assistant_id/..
 
 // catchall to throw error
 app.use(
