@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import * as noteApi from "../api/noteApi";
 import type { NoteState } from "../dto/noteDto";
-import { useUserStore } from "./userStore";
 
 export const useNoteStore = create<NoteState>((set, get) => ({
   notes: [],
@@ -9,6 +8,8 @@ export const useNoteStore = create<NoteState>((set, get) => ({
   filter: "all",
   assistantId: null,
   hasMore: false,
+
+  // assistantId is declared separately for later changes where user can have multiple assistants
 
   setHasMore: (bool) => set({ hasMore: bool }),
 
@@ -45,10 +46,13 @@ export const useNoteStore = create<NoteState>((set, get) => ({
   },
 
   updateNote: async (updates) => {
-    const { filter, notes } = get();
+    const { filter, notes, assistantId } = get();
+
+    if (!assistantId) return;
+
     set({ error: null });
     try {
-      const res = await noteApi.updateNote(updates);
+      const res = await noteApi.updateNote(updates, assistantId);
 
       let updatedNotes = [];
       if (filter === "all") {
@@ -59,7 +63,39 @@ export const useNoteStore = create<NoteState>((set, get) => ({
         updatedNotes = notes.filter((note) => note.id !== res.id);
       }
 
-      set({ notes: updatedNotes });
+      set({ notes: updatedNotes, error: null });
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "An unknown error occurred";
+      set({ error: message });
+    }
+  },
+
+  markAllRead: async (markAsRead) => {
+    const { assistantId, filter, notes, loadInitialNotes } = get();
+
+    if (!assistantId) return;
+
+    try {
+      const res = await noteApi.markAllRead(markAsRead, assistantId);
+
+      if (res.length === 0) return;
+
+      if (filter === "all") {
+        const updatedNotes = notes.map((note) =>
+          res.includes(note.id) ? { ...note, markedRead: markAsRead } : note
+        );
+        set({ notes: updatedNotes });
+      } else if (
+        (!markAsRead && filter === "unread") ||
+        (markAsRead && filter === "read")
+      ) {
+        loadInitialNotes();
+      } else {
+        set({ notes: [] });
+      }
+
+      set({ error: null });
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "An unknown error occurred";
