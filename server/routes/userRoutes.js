@@ -13,14 +13,16 @@ const { authentication } = require("../controllers/authController");
 // ! page reads top to bottom
 
 // gets logged in user, via authentication
-router.route("/").get(authentication, getUser);
+router
+  .route("/")
+  .get(authentication, getUser)
+  .patch(authentication, updateUser)
+  .delete(authentication, deleteUser);
 
 router.route("/all").get(authentication, getUsers);
 
 router
   .route("/:userId")
   .get(authentication, getUserById)
-  .put(authentication, updateUser)
-  .delete(authentication, deleteUser);
 
 module.exports = router;
