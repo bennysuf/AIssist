@@ -25,26 +25,49 @@ module.exports = (sequelize, DataTypes) => {
       callerName: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Caller name cannot be null" },
+        },
       },
+      // callerPhone: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // validate: {
+      //   notNull: { msg: "Phone number cannot be null" },
+      //   is: {
+      //     args: /^[0-9]{10,15}$/, // Only digits, length 10-15
+      //     msg: "Please enter a valid phone number",
+      //   },
+      // },
+      // },
       noteText: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Note text cannot be null" },
+        },
       },
       noteSummery: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Note summery cannot be null" },
+        },
       },
       markedRead: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Marked read cannot be null" },
+        },
       },
     },
     {
       sequelize,
       modelName: "note",
       defaultScope: {
-        attributes: { exclude: ['updatedAt'] },
-      }
+        attributes: { exclude: ["updatedAt"] },
+      },
     }
   );
   return note;
