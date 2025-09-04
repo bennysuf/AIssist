@@ -8,5 +8,5 @@ export async function fetchUser(): Promise<User> {
 
 export async function updateUser(updates: Partial<User>): Promise<User> {
   const { data } = await axios.patch("/me", updates);
-  return data;
+  return data.data;
 }
