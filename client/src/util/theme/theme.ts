@@ -89,9 +89,9 @@ export const lightTheme = createTheme({
       secondary: "#64748B",
       disabled: "#94A3B8",
     },
-    divider: "#E2E8F0",
+    divider: "#8595ac",
     custom: {
-      noteBorder: "#E2E8F0",
+      noteBorder: "#8595ac",
       noteHighlight: "#FEF3C7",
       completedBackground: "#D1FAE5",
       tagBackground: "#EDE9FE",
