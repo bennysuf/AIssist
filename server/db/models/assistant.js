@@ -33,10 +33,16 @@ module.exports = (sequelize, DataTypes) => {
       apiKey: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "API key cannot be null" },
+        },
       },
       role: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: { msg: "Role cannot be null" },
+        },
       },
       companyName: {
         type: DataTypes.STRING,
@@ -50,8 +56,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "assistant",
       defaultScope: {
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-      }
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
     }
   );
   return assistant;
